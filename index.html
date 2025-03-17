@@ -3,43 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Appointments</title>
-    <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- Fix favicon error -->
+    <title>Admin Panel</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
+    <h2>Admin Panel</h2>
 
-    <!-- Login Section -->
-    <div id="loginSection" style="text-align: center;">
-        <h2>Admin Panel Login</h2>
-        <button id="loginBtn">Login with Google</button>
-    </div>
+    <!-- Google Login Button -->
+    <button onclick="login()">Login with Google</button>
+    <button onclick="logout()">Logout</button>
+    <p id="user-info"></p>
 
-    <!-- Admin Panel Section -->
-    <div id="adminSection" style="display: none;">
-        <h2>Appointments</h2>
-        <button id="logoutBtn">Logout</button>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Appointment Date</th>
-                    <th>Appointment Time</th>
-                    <th>Phone Number</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody id="appointmentTableBody"></tbody>
-        </table>
-    </div>
+    <h3>Add Appointment</h3>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="email" id="email" placeholder="Your Email">
+    <input type="date" id="date">
+    <input type="time" id="time">
+    <input type="text" id="phone" placeholder="Phone Number">
+    <textarea id="message" placeholder="Message"></textarea>
+    <button onclick="addAppointment()">Add Appointment</button>
 
-    <!-- Firebase Setup -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    <h3>Appointments (Visible only to Admin)</h3>
+    <ul id="appointments"></ul>
 
-        // ✅ Firebase Configuration
+    <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyAkDl3ckFSXDHlZpyR0s7IZ1UTSX8Z6hSY",
             authDomain: "bolt-54408.firebaseapp.com",
@@ -47,93 +37,105 @@
             storageBucket: "bolt-54408.firebasestorage.app",
             messagingSenderId: "88291790006",
             appId: "1:88291790006:web:259387f2de1d7b164eaa17",
-            measurementId: "G-6YD4D3514J",
+            measurementId: "G-6YD4D3514J"
         };
 
-        // ✅ Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        // ✅ Google Login Function
-        document.getElementById("loginBtn").addEventListener("click", () => {
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    checkAccess(result.user);
+        let adminEmail = "advertisingbolt1@gmail.com";
+
+        // Google Login
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then(result => {
+                    document.getElementById("user-info").innerText = "Logged in as: " + result.user.email;
+                    if (result.user.email === adminEmail) {
+                        loadAppointments();
+                    }
                 })
-                .catch((error) => {
-                    console.error("Login Failed:", error.message);
-                    alert("Login Failed! Please try again.");
+                .catch(error => console.log(error.message));
+        }
+
+        // Logout
+        function logout() {
+            auth.signOut().then(() => {
+                document.getElementById("user-info").innerText = "Logged out";
+                document.getElementById("appointments").innerHTML = "";
+            });
+        }
+
+        // Add Appointment (Everyone can write)
+        function addAppointment() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const date = document.getElementById("date").value;
+            const time = document.getElementById("time").value;
+            const phone = document.getElementById("phone").value;
+            const message = document.getElementById("message").value;
+
+            if (!name || !email || !date || !time || !phone || !message) {
+                alert("Please fill all fields");
+                return;
+            }
+
+            db.collection("appointments").add({
+                name, email, date, time, phone, message
+            }).then(() => {
+                alert("Appointment added!");
+                document.getElementById("name").value = "";
+                document.getElementById("email").value = "";
+                document.getElementById("date").value = "";
+                document.getElementById("time").value = "";
+                document.getElementById("phone").value = "";
+                document.getElementById("message").value = "";
+            }).catch(error => console.log(error.message));
+        }
+
+        // Load Appointments (Only Admin can read)
+        function loadAppointments() {
+            if (auth.currentUser && auth.currentUser.email === adminEmail) {
+                db.collection("appointments").onSnapshot(snapshot => {
+                    const appointmentsList = document.getElementById("appointments");
+                    appointmentsList.innerHTML = "";
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const li = document.createElement("li");
+                        li.innerHTML = `
+                            ${data.name} - ${data.email} - ${data.date} ${data.time}
+                            <button onclick="deleteAppointment('${doc.id}')">Delete</button>
+                        `;
+                        appointmentsList.appendChild(li);
+                    });
                 });
-        });
-
-        // ✅ Logout Function
-        document.getElementById("logoutBtn").addEventListener("click", () => {
-            signOut(auth).then(() => {
-                alert("Logged out successfully.");
-                showLogin();
-            }).catch((error) => {
-                console.error("Logout Error:", error);
-            });
-        });
-
-        // ✅ Check User Access
-        function checkAccess(user) {
-            if (user.email === "advertisingbolt1@gmail.com") {
-                showAdminPanel();
-                loadAppointments();
-            } else {
-                alert("Access Denied! Only authorized users can view this page.");
-                signOut(auth);
-                showLogin();
             }
         }
 
-        // ✅ Load Firestore Data
-        async function loadAppointments() {
-            const querySnapshot = await getDocs(collection(db, "appointments"));
-            let tableBody = document.getElementById("appointmentTableBody");
-
-            tableBody.innerHTML = ""; // Clear previous data
-
-            querySnapshot.forEach((doc) => {
-                let data = doc.data();
-                let row = `
-                    <tr>
-                        <td>${data.name}</td>
-                        <td>${data.email}</td>
-                        <td>${data.date}</td>
-                        <td>${data.time}</td>
-                        <td>${data.phone}</td>
-                        <td>${data.message}</td>
-                    </tr>
-                `;
-                tableBody.innerHTML += row;
-            });
+        // Delete Appointment (Only Admin can delete)
+        function deleteAppointment(id) {
+            if (auth.currentUser && auth.currentUser.email === adminEmail) {
+                db.collection("appointments").doc(id).delete()
+                    .then(() => alert("Appointment deleted"))
+                    .catch(error => console.log(error.message));
+            } else {
+                alert("You are not authorized to delete");
+            }
         }
 
-        // ✅ UI Functions
-        function showLogin() {
-            document.getElementById("loginSection").style.display = "block";
-            document.getElementById("adminSection").style.display = "none";
-        }
-
-        function showAdminPanel() {
-            document.getElementById("loginSection").style.display = "none";
-            document.getElementById("adminSection").style.display = "block";
-        }
-
-        // ✅ Detect Auth State
-        onAuthStateChanged(auth, (user) => {
+        // Monitor Login State
+        auth.onAuthStateChanged(user => {
             if (user) {
-                checkAccess(user);
+                document.getElementById("user-info").innerText = "Logged in as: " + user.email;
+                if (user.email === adminEmail) {
+                    loadAppointments();
+                }
             } else {
-                showLogin();
+                document.getElementById("user-info").innerText = "Not logged in";
             }
         });
-
     </script>
-
 </body>
 </html>
