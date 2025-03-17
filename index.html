@@ -1,141 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Auth with Google</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f9;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .user-details {
+      margin-top: 20px;
+    }
+    .user-details p {
+      margin: 5px 0;
+    }
+    .loading {
+      display: none;
+      margin-top: 10px;
+    }
+    .loading.active {
+      display: block;
+    }
+  </style>
 </head>
 <body>
-    <h2>Admin Panel</h2>
+  <div class="container">
+    <h1>Login with Google</h1>
+    <button id="signInBtn">Login with Google</button>
+    <div class="loading" id="loading">Loading...</div>
+    <div class="user-details" id="userDetails" style="display: none;">
+      <h2>User Details</h2>
+      <p><strong>Name:</strong> <span id="userName"></span></p>
+      <p><strong>Email:</strong> <span id="userEmail"></span></p>
+      <p><strong>Appointment Date:</strong> <span id="appointmentDate"></span></p>
+      <p><strong>Appointment Time:</strong> <span id="appointmentTime"></span></p>
+      <p><strong>Phone Number:</strong> <span id="phoneNumber"></span></p>
+    </div>
+  </div>
 
-    <!-- Google Login Button -->
-    <button onclick="login()">Login with Google</button>
-    <button onclick="logout()">Logout</button>
-    <p id="user-info"></p>
+  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <!-- Add Firebase products that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
 
-    <h3>Add Appointment</h3>
-    <input type="text" id="name" placeholder="Your Name">
-    <input type="email" id="email" placeholder="Your Email">
-    <input type="date" id="date">
-    <input type="time" id="time">
-    <input type="text" id="phone" placeholder="Phone Number">
-    <textarea id="message" placeholder="Message"></textarea>
-    <button onclick="addAppointment()">Add Appointment</button>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let firebaseConfig;
+      const signInBtn = document.getElementById('signInBtn');
+      const loading = document.getElementById('loading');
+      const userDetails = document.getElementById('userDetails');
 
-    <h3>Appointments (Visible only to Admin)</h3>
-    <ul id="appointments"></ul>
+      async function fetchFirebaseConfig() {
+        try {
+          const response = await fetch("http://localhost:5000/firebase-config");
+          if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+          firebaseConfig = await response.json();
 
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyAkDl3ckFSXDHlZpyR0s7IZ1UTSX8Z6hSY",
-            authDomain: "bolt-54408.firebaseapp.com",
-            projectId: "bolt-54408",
-            storageBucket: "bolt-54408.firebasestorage.app",
-            messagingSenderId: "88291790006",
-            appId: "1:88291790006:web:259387f2de1d7b164eaa17",
-            measurementId: "G-6YD4D3514J"
-        };
+          // Initialize Firebase using the compatibility libraries
+          firebase.initializeApp(firebaseConfig);
+          console.log("Firebase Initialized");
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
+          signInBtn.disabled = false;
+          signInBtn.addEventListener('click', signInWithGoogle);
+        } catch (error) {
+          console.error("Error fetching Firebase config:", error);
+          signInBtn.disabled = true;
+        }
+      }
 
-        let adminEmail = "advertisingbolt1@gmail.com";
-
-        // Google Login
-        function login() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then(result => {
-                    document.getElementById("user-info").innerText = "Logged in as: " + result.user.email;
-                    if (result.user.email === adminEmail) {
-                        loadAppointments();
-                    }
-                })
-                .catch(error => console.log(error.message));
+      async function signInWithGoogle() {
+        if (!firebase.apps.length) {
+          console.error("Firebase not initialized");
+          return;
         }
 
-        // Logout
-        function logout() {
-            auth.signOut().then(() => {
-                document.getElementById("user-info").innerText = "Logged out";
-                document.getElementById("appointments").innerHTML = "";
-            });
+        signInBtn.disabled = true;
+        loading.classList.add('active');
+
+        try {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          provider.addScope('profile');
+          provider.addScope('email');
+          provider.setCustomParameters({ prompt: 'select_account' });
+
+          const result = await firebase.auth().signInWithPopup(provider);
+          console.log("Google sign-in successful:", result.user);
+
+          const idToken = await result.user.getIdToken();
+          fetchUserDetails(idToken);
+        } catch (error) {
+          console.error("Sign-in error:", error);
+          showNotification("Sign-in failed. Please try again.", 'error');
+        } finally {
+          signInBtn.disabled = false;
+          loading.classList.remove('active');
         }
+      }
 
-        // Add Appointment (Everyone can write)
-        function addAppointment() {
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const date = document.getElementById("date").value;
-            const time = document.getElementById("time").value;
-            const phone = document.getElementById("phone").value;
-            const message = document.getElementById("message").value;
-
-            if (!name || !email || !date || !time || !phone || !message) {
-                alert("Please fill all fields");
-                return;
+      async function fetchUserDetails(idToken) {
+        try {
+          const response = await fetch('http://localhost:5000/admin', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${idToken}`
             }
-
-            db.collection("appointments").add({
-                name, email, date, time, phone, message
-            }).then(() => {
-                alert("Appointment added!");
-                document.getElementById("name").value = "";
-                document.getElementById("email").value = "";
-                document.getElementById("date").value = "";
-                document.getElementById("time").value = "";
-                document.getElementById("phone").value = "";
-                document.getElementById("message").value = "";
-            }).catch(error => console.log(error.message));
+          });
+          const data = await response.json();
+          displayUserDetails(data);
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+          showNotification("Failed to fetch user details.", 'error');
         }
+      }
 
-        // Load Appointments (Only Admin can read)
-        function loadAppointments() {
-            if (auth.currentUser && auth.currentUser.email === adminEmail) {
-                db.collection("appointments").onSnapshot(snapshot => {
-                    const appointmentsList = document.getElementById("appointments");
-                    appointmentsList.innerHTML = "";
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const li = document.createElement("li");
-                        li.innerHTML = `
-                            ${data.name} - ${data.email} - ${data.date} ${data.time}
-                            <button onclick="deleteAppointment('${doc.id}')">Delete</button>
-                        `;
-                        appointmentsList.appendChild(li);
-                    });
-                });
-            }
-        }
+      function displayUserDetails(data) {
+        userDetails.style.display = 'block';
+        document.getElementById('userName').textContent = data.name;
+        document.getElementById('userEmail').textContent = data.email;
+        document.getElementById('appointmentDate').textContent = data.appointmentDate;
+        document.getElementById('appointmentTime').textContent = data.appointmentTime;
+        document.getElementById('phoneNumber').textContent = data.phoneNumber;
+      }
 
-        // Delete Appointment (Only Admin can delete)
-        function deleteAppointment(id) {
-            if (auth.currentUser && auth.currentUser.email === adminEmail) {
-                db.collection("appointments").doc(id).delete()
-                    .then(() => alert("Appointment deleted"))
-                    .catch(error => console.log(error.message));
-            } else {
-                alert("You are not authorized to delete");
-            }
-        }
+      function showNotification(message, type) {
+        const statusEl = document.createElement('div');
+        statusEl.innerText = message;
+        statusEl.style.marginTop = '10px';
+        statusEl.style.color = type === 'error' ? '#ef4444' : '#10b981';
+        document.body.appendChild(statusEl);
+        setTimeout(() => statusEl.remove(), 3000);
+      }
 
-        // Monitor Login State
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                document.getElementById("user-info").innerText = "Logged in as: " + user.email;
-                if (user.email === adminEmail) {
-                    loadAppointments();
-                }
-            } else {
-                document.getElementById("user-info").innerText = "Not logged in";
-            }
-        });
-    </script>
+      fetchFirebaseConfig();
+    });
+  </script>
 </body>
 </html>
