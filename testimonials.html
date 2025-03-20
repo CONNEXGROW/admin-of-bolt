@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolt Uploads | Login & Testimonials</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1 i {
+            margin-right: 12px;
+            font-size: 32px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .login-section, .testimonials-section, .add-testimonial-section {
+            margin-bottom: 30px;
+        }
+
+        .login-section h2, .testimonials-section h2, .add-testimonial-section h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: var(--dark);
+        }
+
+        #login-button, .add-testimonial-section button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #login-button:hover, .add-testimonial-section button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #login-button i, .add-testimonial-section button i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .testimonial-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-item img {
+            border-radius: 50%;
+            margin-right: 20px;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+        }
+
+        .testimonial-content {
+            flex: 1;
+        }
+
+        .testimonial-content h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .testimonial-content p {
+            margin: 5px 0 10px;
+            color: var(--gray);
+        }
+
+        .testimonial-content .description {
+            font-style: italic;
+            color: var(--gray);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            font-size: 24px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        .add-testimonial-section input,
+        .add-testimonial-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                width: 98%;
+                margin: 15px auto;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-bolt"></i> Bolt Uploads</h1>
+            <p>Admin Panel for Managing Uploads and Testimonials</p>
+        </div>
+
+        <div class="content">
+            <div class="login-section section" id="login-section">
+                <h2>Login to Access Testimonials</h2>
+                <button id="login-button"><i class="fab fa-google"></i> Login with Google</button>
+            </div>
+
+            <div class="testimonials-section section" id="testimonials-section" style="display: none;">
+                <h2>Client Testimonials</h2>
+                <div id="testimonials-container">
+                    <!-- Testimonials will be populated here -->
+                </div>
+                <div id="testimonials-loading" class="loading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+            </div>
+
+            <div class="add-testimonial-section section" id="add-testimonial-section" style="display: none;">
+                <h2>Add Your Testimonial</h2>
+                <form id="testimonialForm">
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                    <textarea id="message" name="message" placeholder="Your Testimonial" required></textarea>
+                    <input type="text" id="imageUrl" name="imageUrl" placeholder="Your Image URL" required>
+                    <input type="text" id="description" name="description" placeholder="Your Description (e.g., Job Title)" required>
+                    <button type="submit"><i class="fas fa-plus"></i> Add Testimonial</button>
+                </form>
+                <div id="testimonial-response-message"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Bolt Uploads | All Rights Reserved
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKEIBthV_wcX0Omzqk97tITFqMx8hRGVA",
+            authDomain: "bolt-uplords.firebaseapp.com",
+            projectId: "bolt-uplords",
+            storageBucket: "bolt-uplords.firebasestorage.app",
+            messagingSenderId: "199484285040",
+            appId: "1:199484285040:web:5a28f158b5541cadad54b5"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // DOM elements
+        const loginButton = document.getElementById('login-button');
+        const loginSection = document.getElementById('login-section');
+        const testimonialsSection = document.getElementById('testimonials-section');
+        const addTestimonialSection = document.getElementById('add-testimonial-section');
+        const testimonialsContainer = document.getElementById('testimonials-container');
+        const testimonialsLoading = document.getElementById('testimonials-loading');
+        const testimonialForm = document.getElementById('testimonialForm');
+        const testimonialResponseMessage = document.getElementById('testimonial-response-message');
+
+        // Google login
+        loginButton.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then(result => {
+                    // Hide login section and show testimonials and add testimonial sections
+                    loginSection.style.display = 'none';
+                    testimonialsSection.style.display = 'block';
+                    addTestimonialSection.style.display = 'block';
+
+                    const idToken = result.user.getIdToken();
+                    idToken.then(token => {
+                        fetchTestimonials(token);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error during Google login:', error);
+                    alert('Google login failed. Please try again.');
+                });
+        });
+
+        // Fetch testimonials
+        const fetchTestimonials = (token) => {
+            testimonialsLoading.style.display = 'block';
+
+            fetch('https://82r28r72gfhfb.onrender.com/testimonials', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                testimonialsLoading.style.display = 'none';
+
+                if (data && data.length > 0) {
+                    testimonialsContainer.innerHTML = '';
+
+                    // Add testimonials
+                    data.forEach(item => {
+                        const testimonialDiv = document.createElement('div');
+                        testimonialDiv.className = 'testimonial-item';
+                        testimonialDiv.innerHTML = `
+                            <img src="${item.imageUrl}" alt="${item.name}">
+                            <div class="testimonial-content">
+                                <h3>${item.name}</h3>
+                                <p>${item.message}</p>
+                                <p class="description">${item.description}</p>
+                            </div>
+                        `;
+                        testimonialsContainer.appendChild(testimonialDiv);
+                    });
+                } else {
+                    testimonialsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="far fa-folder-open"></i>
+                            <p>No testimonials available</p>
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching testimonials:', error);
+                testimonialsLoading.style.display = 'none';
+                testimonialsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle" style="color: #dc3545;"></i>
+                        <p>Failed to fetch testimonials</p>
+                    </div>
+                `;
+            });
+        };
+
+        // Handle testimonial submission
+        testimonialForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+            const imageUrl = document.getElementById('imageUrl').value;
+            const description = document.getElementById('description').value;
+
+            const idToken = await firebase.auth().currentUser.getIdToken();
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb.onrender.com/testimonial', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${idToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, message, imageUrl, description })
+                });
+
+                if (response.ok) {
+                    testimonialResponseMessage.innerText = 'Testimonial added successfully!';
+                    fetchTestimonials(idToken); // Refresh the testimonials list
+                } else {
+                    testimonialResponseMessage.innerText = 'Failed to add testimonial.';
+                }
+            } catch (error) {
+                console.error('Error adding testimonial:', error);
+                testimonialResponseMessage.innerText = 'Error adding testimonial.';
+            }
+        });
+
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                loginSection.style.display = 'none';
+                testimonialsSection.style.display = 'block';
+                addTestimonialSection.style.display = 'block';
+
+                user.getIdToken().then(token => {
+                    fetchTestimonials(token);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
