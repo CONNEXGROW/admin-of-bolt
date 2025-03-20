@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolt Uploads | Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1 i {
+            margin-right: 12px;
+            font-size: 32px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .login-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+
+        .login-section p {
+            margin-bottom: 20px;
+            color: var(--gray);
+        }
+
+        #upload-login-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #upload-login-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #upload-login-button i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .upload-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: 8px;
+        }
+
+        .upload-section h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: var(--dark);
+        }
+
+        .upload-section input,
+        .upload-section textarea,
+        .upload-section button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .upload-section button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .upload-section button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        th {
+            background-color: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+            position: sticky;
+            top: 0;
+        }
+
+        tbody tr {
+            transition: var(--transition);
+        }
+
+        tbody tr:hover {
+            background-color: rgba(67, 97, 238, 0.05);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            font-size: 24px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                width: 98%;
+                margin: 15px auto;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            th, td {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+
+            #upload-login-button {
+                padding: 10px 20px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 13px;
+            }
+
+            .table-container {
+                margin: 0 -15px;
+                width: calc(100% + 30px);
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-bolt"></i> Bolt Uploads</h1>
+            <p>Admin Panel for Managing Uploads</p>
+        </div>
+
+        <div class="content">
+            <div class="login-section">
+                <p>Please login to access the uploads section</p>
+                <button id="upload-login-button"><i class="fab fa-google"></i> Login with Google</button>
+            </div>
+
+            <div class="upload-section">
+                <h2>Upload Name, Description, and Link</h2>
+                <form id="uploadForm">
+                    <input type="text" id="name" name="name" placeholder="Name" required>
+                    <textarea id="description" name="description" placeholder="Description" required></textarea>
+                    <input type="text" id="link" name="link" placeholder="YouTube or Google Drive Link" required>
+                    <button type="submit">Upload</button>
+                </form>
+                <div id="upload-response-message"></div>
+            </div>
+
+            <div class="table-container">
+                <table id="uploads-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Media</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be populated here -->
+                    </tbody>
+                </table>
+
+                <div id="uploads-empty-state" class="empty-state">
+                    <i class="far fa-folder-open"></i>
+                    <p>No uploads available</p>
+                </div>
+
+                <div id="uploads-loading" class="loading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Bolt Uploads | All Rights Reserved
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKEIBthV_wcX0Omzqk97tITFqMx8hRGVA",
+  authDomain: "bolt-uplords.firebaseapp.com",
+  projectId: "bolt-uplords",
+  storageBucket: "bolt-uplords.firebasestorage.app",
+  messagingSenderId: "199484285040",
+  appId: "1:199484285040:web:5a28f158b5541cadad54b5"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // DOM elements
+        const uploadLoginButton = document.getElementById('upload-login-button');
+        const uploadForm = document.getElementById('uploadForm');
+        const uploadResponseMessage = document.getElementById('upload-response-message');
+        const uploadsTable = document.getElementById('uploads-table');
+        const uploadsTableBody = uploadsTable.querySelector('tbody');
+        const uploadsEmptyState = document.getElementById('uploads-empty-state');
+        const uploadsLoading = document.getElementById('uploads-loading');
+
+        // Hide table initially, show empty state
+        uploadsTable.style.display = 'none';
+        uploadsEmptyState.style.display = 'block';
+
+        // Google login for uploads
+        uploadLoginButton.addEventListener('click', () => {
+            uploadsLoading.style.display = 'block';
+            uploadsEmptyState.style.display = 'none';
+
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then(result => {
+                    uploadLoginButton.innerHTML = '<i class="fas fa-check-circle"></i> Logged In';
+                    uploadLoginButton.disabled = true;
+                    uploadLoginButton.style.backgroundColor = '#4cc9f0';
+
+                    const idToken = result.user.getIdToken();
+                    idToken.then(token => {
+                        fetchUploadsDetails(token);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error during Google login for uploads:', error);
+                    showUploadsError('Google login failed. Please try again.');
+                });
+        });
+
+        // Fetch uploads details with authentication
+        const fetchUploadsDetails = (token) => {
+            uploadsLoading.style.display = 'block';
+
+            fetch('https://82r28r72gfhfb.onrender.com/uploads-details', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                return response.json();
+            })
+            .then(data => {
+                uploadsLoading.style.display = 'none';
+
+                if (data && data.length > 0) {
+                    uploadsTable.style.display = 'table';
+                    uploadsEmptyState.style.display = 'none';
+
+                    // Clear existing rows
+                    uploadsTableBody.innerHTML = '';
+
+                    // Add data rows
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${escapeHtml(item.name || '-')}</td>
+                            <td>${escapeHtml(item.description || '-')}</td>
+                            <td>
+                                ${item.link.includes('youtube.com') || item.link.includes('youtu.be') ?
+                                `<iframe width="200" height="150" src="https://www.youtube.com/embed/${item.link.split('v=')[1] || item.link.split('/')[3]}" frameborder="0" allowfullscreen></iframe>` :
+                                `<img src="${item.link}" alt="${item.name}" width="200" height="150">`}
+                            </td>
+                            <td>${new Date(item.createdAt?.seconds * 1000).toLocaleString() || '-'}</td>
+                            <td>
+                                <button class="delete-button" data-id="${item.id}">Delete</button>
+                            </td>
+                        `;
+                        uploadsTableBody.appendChild(row);
+                    });
+
+                    // Add event listeners to delete buttons
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const uploadId = button.getAttribute('data-id');
+                            if (confirm('Are you sure you want to delete this upload?')) {
+                                deleteUpload(uploadId, token);
+                            }
+                        });
+                    });
+                } else {
+                    // No data
+                    uploadsTable.style.display = 'none';
+                    uploadsEmptyState.style.display = 'block';
+                    uploadsEmptyState.innerHTML = `
+                        <i class="far fa-folder-open"></i>
+                        <p>No uploads available</p>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching uploads details:', error);
+                uploadsLoading.style.display = 'none';
+                showUploadsError('Failed to fetch uploads data');
+            });
+        };
+
+        // Handle link upload
+        uploadForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const link = document.getElementById('link').value;
+
+            const idToken = await firebase.auth().currentUser.getIdToken();
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb.onrender.com/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${idToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, description, link })
+                });
+
+                if (response.ok) {
+                    uploadResponseMessage.innerText = 'Upload successful!';
+                    fetchUploadsDetails(idToken); // Refresh the uploads table
+                } else {
+                    uploadResponseMessage.innerText = 'Upload failed.';
+                }
+            } catch (error) {
+                console.error('Error uploading link:', error);
+                uploadResponseMessage.innerText = 'Error uploading link.';
+            }
+        });
+
+        // Handle delete upload
+        const deleteUpload = async (uploadId, token) => {
+            try {
+                const response = await fetch(`https://82r28r72gfhfb.onrender.com/upload/${uploadId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    uploadResponseMessage.innerText = 'Delete successful!';
+                    fetchUploadsDetails(token); // Refresh the uploads table
+                } else {
+                    uploadResponseMessage.innerText = 'Delete failed.';
+                }
+            } catch (error) {
+                console.error('Error deleting upload:', error);
+                uploadResponseMessage.innerText = 'Error deleting upload.';
+            }
+        };
+
+        // Helper function to show errors
+        const showUploadsError = (message) => {
+            uploadsLoading.style.display = 'none';
+            uploadsEmptyState.style.display = 'block';
+            uploadsEmptyState.innerHTML = `
+                <i class="fas fa-exclamation-circle" style="color: #dc3545;"></i>
+                <p>${message}</p>
+            `;
+        };
+
+        // Helper function to escape HTML to prevent XSS
+        const escapeHtml = (unsafe) => {
+            if (typeof unsafe !== 'string') return unsafe;
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        };
+
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                uploadLoginButton.innerHTML = '<i class="fas fa-check-circle"></i> Logged In';
+                uploadLoginButton.disabled = true;
+                uploadLoginButton.style.backgroundColor = '#4cc9f0';
+
+                user.getIdToken().then(token => {
+                    fetchUploadsDetails(token);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
