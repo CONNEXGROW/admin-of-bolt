@@ -122,6 +122,7 @@
             border-radius: 8px;
             background-color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
 
         .testimonial-item img {
@@ -150,6 +151,21 @@
         .testimonial-content .description {
             font-style: italic;
             color: var(--gray);
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            color: var(--primary);
         }
 
         .empty-state {
@@ -353,8 +369,19 @@
                                 <p>${item.message}</p>
                                 <p class="description">${item.description}</p>
                             </div>
+                            <button class="delete-button" data-id="${item.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         `;
                         testimonialsContainer.appendChild(testimonialDiv);
+                    });
+
+                    // Attach delete event listeners
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const testimonialId = button.getAttribute('data-id');
+                            deleteTestimonial(testimonialId, token);
+                        });
                     });
                 } else {
                     testimonialsContainer.innerHTML = `
@@ -409,6 +436,27 @@
                 testimonialResponseMessage.innerText = 'Error adding testimonial.';
             }
         });
+
+        // Delete testimonial
+        const deleteTestimonial = async (id, token) => {
+            try {
+                const response = await fetch(`https://82r28r72gfhfb.onrender.com/testimonial/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    fetchTestimonials(token); // Refresh the testimonials list
+                } else {
+                    alert('Failed to delete testimonial.');
+                }
+            } catch (error) {
+                console.error('Error deleting testimonial:', error);
+                alert('Error deleting testimonial.');
+            }
+        };
 
         // Check if user is already logged in
         firebase.auth().onAuthStateChanged(user => {
