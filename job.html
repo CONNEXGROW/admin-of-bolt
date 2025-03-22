@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Job Positions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS styles remain the same */
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a56d4;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header h1 i {
+            margin-right: 12px;
+            font-size: 32px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .login-section, .job-positions-section, .add-job-position-section {
+            margin-bottom: 30px;
+        }
+
+        .login-section h2, .job-positions-section h2, .add-job-position-section h2 {
+            margin-bottom: 20px;
+            font-size: 22px;
+            color: var(--dark);
+        }
+
+        #login-button, .add-job-position-section button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #login-button:hover, .add-job-position-section button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        #login-button i, .add-job-position-section button i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        .job-position-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .job-position-content {
+            flex: 1;
+        }
+
+        .job-position-content h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .job-position-content p {
+            margin: 5px 0 10px;
+            color: var(--gray);
+        }
+
+        .delete-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            font-size: 24px;
+            color: var(--primary);
+            animation: spin 1s linear infinite;
+        }
+
+        .add-job-position-section input, .add-job-position-section textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray);
+            font-size: 14px;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                width: 98%;
+                margin: 15px auto;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-bolt"></i> Admin Panel</h1>
+            <p>Manage Job Positions</p>
+        </div>
+
+        <div class="content">
+            <div class="login-section section" id="login-section">
+                <h2>Login to Access Admin Panel</h2>
+                <button id="login-button"><i class="fab fa-google"></i> Login with Google</button>
+            </div>
+
+            <div class="job-positions-section section" id="job-positions-section" style="display: none;">
+                <h2>Job Positions</h2>
+                <div id="job-positions-container">
+                    <!-- Job positions will be populated here -->
+                </div>
+                <div id="job-positions-loading" class="loading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="add-job-position-section">
+                    <h2>Add Job Position</h2>
+                    <form id="jobPositionForm">
+                        <input type="text" id="jobTitle" name="jobTitle" placeholder="Job Title" required>
+                        <textarea id="jobDescription" name="jobDescription" placeholder="Job Description" required></textarea>
+                        <input type="text" id="jobRequirements" name="jobRequirements" placeholder="Requirements" required>
+                        <input type="text" id="jobLocation" name="jobLocation" placeholder="Location" required>
+                        <button type="submit"><i class="fas fa-plus"></i> Add Job Position</button>
+                    </form>
+                    <div id="job-position-response-message"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            &copy; 2025 Admin Panel | All Rights Reserved
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAKEIBthV_wcX0Omzqk97tITFqMx8hRGVA",
+            authDomain: "bolt-uplords.firebaseapp.com",
+            projectId: "bolt-uplords",
+            storageBucket: "bolt-uplords.appspot.com",
+            messagingSenderId: "199484285040",
+            appId: "1:199484285040:web:5a28f158b5541cadad54b5"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // DOM elements
+        const loginButton = document.getElementById('login-button');
+        const loginSection = document.getElementById('login-section');
+        const jobPositionsSection = document.getElementById('job-positions-section');
+        const jobPositionsContainer = document.getElementById('job-positions-container');
+        const jobPositionsLoading = document.getElementById('job-positions-loading');
+        const jobPositionForm = document.getElementById('jobPositionForm');
+        const jobPositionResponseMessage = document.getElementById('job-position-response-message');
+
+        // Google login
+        loginButton.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then(result => {
+                    // Hide login section and show job positions section
+                    loginSection.style.display = 'none';
+                    jobPositionsSection.style.display = 'block';
+
+                    const idToken = result.user.getIdToken();
+                    idToken.then(token => {
+                        fetchJobPositions(token);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error during Google login:', error);
+                    alert('Google login failed. Please try again.');
+                });
+        });
+
+        // Fetch job positions
+        const fetchJobPositions = async (token) => {
+            jobPositionsLoading.style.display = 'block';
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb.onrender.com/job-positions', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        throw new Error('Forbidden: You do not have permission to access this resource.');
+                    }
+                    throw new Error('Failed to fetch data');
+                }
+
+                const data = await response.json();
+                jobPositionsLoading.style.display = 'none';
+
+                if (data && data.length > 0) {
+                    jobPositionsContainer.innerHTML = '';
+
+                    // Add job positions
+                    data.forEach(item => {
+                        const jobPositionDiv = document.createElement('div');
+                        jobPositionDiv.className = 'job-position-item';
+                        jobPositionDiv.innerHTML = `
+                            <div class="job-position-content">
+                                <h3>${item.title}</h3>
+                                <p>${item.description}</p>
+                                <p><strong>Requirements:</strong> ${item.requirements}</p>
+                                <p><strong>Location:</strong> ${item.location}</p>
+                            </div>
+                            <button class="delete-button" data-id="${item.id}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        `;
+                        jobPositionsContainer.appendChild(jobPositionDiv);
+                    });
+
+                    // Attach delete event listeners
+                    document.querySelectorAll('.delete-button').forEach(button => {
+                        button.addEventListener('click', () => {
+                            const jobPositionId = button.getAttribute('data-id');
+                            deleteJobPosition(jobPositionId, token);
+                        });
+                    });
+                } else {
+                    jobPositionsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="far fa-folder-open"></i>
+                            <p>No job positions available</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching job positions:', error);
+                jobPositionsLoading.style.display = 'none';
+                jobPositionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle" style="color: #dc3545;"></i>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        };
+
+        // Handle job position submission
+        jobPositionForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('jobTitle').value;
+            const description = document.getElementById('jobDescription').value;
+            const requirements = document.getElementById('jobRequirements').value;
+            const location = document.getElementById('jobLocation').value;
+
+            const idToken = await firebase.auth().currentUser.getIdToken();
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb.onrender.com/job-position', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${idToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title, description, requirements, location })
+                });
+
+                if (response.ok) {
+                    jobPositionResponseMessage.innerText = 'Job position added successfully!';
+                    fetchJobPositions(idToken); // Refresh the job positions list
+                } else {
+                    jobPositionResponseMessage.innerText = 'Failed to add job position.';
+                }
+            } catch (error) {
+                console.error('Error adding job position:', error);
+                jobPositionResponseMessage.innerText = 'Error adding job position.';
+            }
+        });
+
+        // Delete job position
+        const deleteJobPosition = async (id, token) => {
+            try {
+                const response = await fetch(`https://82r28r72gfhfb.onrender.com/job-position/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    fetchJobPositions(token); // Refresh the job positions list
+                } else {
+                    alert('Failed to delete job position.');
+                }
+            } catch (error) {
+                console.error('Error deleting job position:', error);
+                alert('Error deleting job position.');
+            }
+        };
+
+        // Check if user is already logged in
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                loginSection.style.display = 'none';
+                jobPositionsSection.style.display = 'block';
+
+                user.getIdToken().then(token => {
+                    fetchJobPositions(token);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
