@@ -484,8 +484,8 @@
                         row.innerHTML = `
                             <td>${escapeHtml(item.name || '-')}</td>
                             <td>${escapeHtml(item.email || '-')}</td>
-                            <td>${escapeHtml(item.appointmentDate || '-')}</td>
-                            <td>${escapeHtml(item.appointmentTime || '-')}</td>
+                            <td>${formatDate(item.appointmentDate)}</td>
+                            <td>${formatTime(item.appointmentTime)}</td>
                             <td>${escapeHtml(item.phone || '-')}</td>
                             <td>${escapeHtml(item.message || '-')}</td>
                         `;
@@ -527,6 +527,18 @@
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
+        };
+
+        // Helper function to format date
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
+        };
+
+        // Helper function to format time
+        const formatTime = (timeString) => {
+            const time = new Date(`1970-01-01T${timeString}`);
+            return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).format(time);
         };
 
         // Check if user is already logged in
