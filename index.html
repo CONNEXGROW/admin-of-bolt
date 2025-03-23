@@ -48,19 +48,91 @@
             color: white;
             padding: 25px 30px;
             position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
         }
 
         .header h1 {
             font-size: 28px;
             font-weight: 600;
             margin-bottom: 5px;
-            display: flex;
-            align-items: center;
         }
 
         .header p {
             opacity: 0.9;
             font-size: 16px;
+        }
+
+        /* Dropdown Menu Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .dropdown-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: var(--dark);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--primary);
+        }
+
+        .dropdown-content a i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .dropdown.active .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .content {
@@ -191,10 +263,17 @@
 
             .header {
                 padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
             }
 
             .header h1 {
                 font-size: 24px;
+            }
+
+            .dropdown {
+                align-self: flex-end;
             }
 
             .content {
@@ -237,19 +316,22 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>
-                Bolt Appointments
-                <a href="uplord.html" style="margin-left: 20px; color: white; text-decoration: none;">
-                    <i class="fas fa-link"></i> Uplords
-                </a>
-                <a href="testimonials.html" style="margin-left: 20px; color: white; text-decoration: none;">
-                    <i class="fas fa-link"></i> Testimonials
-                </a>
-                 <a href="job.html" style="margin-left: 20px; color: white; text-decoration: none;">
-                    <i class="fas fa-link"></i> Testimonials
-                </a>
-            </h1>
-            <p>Admin Panel for the Appointments</p>
+            <div class="header-left">
+                <h1>Bolt Appointments</h1>
+                <p>Admin Panel for the Appointments</p>
+            </div>
+            
+            <div class="dropdown" id="navDropdown">
+                <button class="dropdown-btn" onclick="toggleDropdown()">
+                    <i class="fas fa-bars"></i> Navigation
+                </button>
+                <div class="dropdown-content">
+                    <a href="uplord.html"><i class="fas fa-link"></i> Uplords</a>
+                    <a href="testimonials.html"><i class="fas fa-star"></i> Testimonials</a>
+                    <a href="job.html"><i class="fas fa-briefcase"></i> Career</a>
+                    <a href="appointments.html"><i class="fas fa-calendar-check"></i> Appointments</a>
+                </div>
+            </div>
         </div>
 
         <div class="content">
@@ -314,6 +396,19 @@
         const tableBody = thesisTable.querySelector('tbody');
         const emptyState = document.getElementById('empty-state');
         const loading = document.getElementById('loading');
+        const navDropdown = document.getElementById('navDropdown');
+
+        // Toggle dropdown function
+        function toggleDropdown() {
+            navDropdown.classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-btn')) {
+                navDropdown.classList.remove('active');
+            }
+        });
 
         // Hide table initially, show empty state
         thesisTable.style.display = 'none';
