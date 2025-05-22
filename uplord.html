@@ -385,7 +385,7 @@
         const fetchUploadsDetails = (token) => {
             uploadsLoading.style.display = 'block';
 
-            fetch('https://82r28r72gfhfb.onrender.com/uploads-details', {
+            fetch('https://oy5r9nomvn.onrender.com/uploads-details', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -462,7 +462,7 @@
             const idToken = await firebase.auth().currentUser.getIdToken();
 
             try {
-                const response = await fetch('https://82r28r72gfhfb.onrender.com/upload', {
+                const response = await fetch('https://oy5r9nomvn.onrender.com/upload', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${idToken}`,
