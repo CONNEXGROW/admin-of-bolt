@@ -3,242 +3,306 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bolt Appointments | Admin Panel</title>
+    <title>Bolt Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #4361ee;
-            --primary-dark: #3a56d4;
-            --secondary: #3f37c9;
-            --accent: #4895ef;
-            --success: #4cc9f0;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s ease;
-        }
-
+        /* Simple CSS Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Base Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: var(--dark);
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
         }
 
+        /* Container */
         .container {
-            width: 95%;
+            width: 100%;
             max-width: 1200px;
-            margin: 30px auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            overflow: hidden;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
-        .header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 25px 30px;
-            position: relative;
+        /* Header */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .header-left {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .header p {
-            opacity: 0.9;
-            font-size: 16px;
-        }
-
-        /* Dropdown Menu Styles */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-btn {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 10px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
+        .logo {
             display: flex;
             align-items: center;
-            gap: 8px;
-            transition: var(--transition);
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
         }
 
-        .dropdown-btn:hover {
-            background-color: rgba(255, 255, 255, 0.3);
+        .logo i {
+            margin-right: 10px;
         }
 
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            right: 0;
-            background-color: white;
-            min-width: 180px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        .dropdown-content a {
-            color: var(--dark);
-            padding: 12px 16px;
-            text-decoration: none;
+        /* Login Page */
+        .login-container {
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
-            transition: var(--transition);
-        }
-
-        .dropdown-content a:hover {
-            background-color: var(--light);
-            color: var(--primary);
-        }
-
-        .dropdown-content a i {
-            color: var(--primary);
-            font-size: 16px;
-        }
-
-        .dropdown.active .dropdown-content {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .content {
-            padding: 30px;
-        }
-
-        .login-section {
-            text-align: center;
-            margin-bottom: 30px;
+            min-height: 100vh;
             padding: 20px;
-            background-color: var(--light);
-            border-radius: 8px;
         }
 
-        .login-section p {
+        .login-box {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-title {
             margin-bottom: 20px;
-            color: var(--gray);
+            font-size: 24px;
         }
 
-        #login-button {
-            display: inline-flex;
+        .login-btn {
+            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 24px;
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 6px;
+            width: 100%;
+            padding: 12px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             font-size: 16px;
-            font-weight: 500;
             cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s;
         }
 
-        #login-button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        .login-btn:hover {
+            background-color: #f5f5f5;
         }
 
-        #login-button i {
+        .login-btn img {
             margin-right: 10px;
-            font-size: 18px;
         }
 
-        .table-container {
+        /* Main Content */
+        .main-content {
+            padding: 20px 0;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
             overflow-x: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid #2563eb;
+            color: #2563eb;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background-color: #6b7280;
+        }
+
+        .btn-secondary:hover {
+            background-color: #4b5563;
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        .btn-sm {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            background-color: white;
         }
 
         th, td {
-            padding: 16px;
+            padding: 12px;
             text-align: left;
-            border-bottom: 1px solid var(--light-gray);
+            border-bottom: 1px solid #eee;
         }
 
         th {
-            background-color: var(--light);
+            background-color: #f9fafb;
             font-weight: 600;
-            color: var(--dark);
-            position: sticky;
-            top: 0;
         }
 
-        tbody tr {
-            transition: var(--transition);
-        }
-
-        tbody tr:hover {
-            background-color: rgba(67, 97, 238, 0.05);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--gray);
-        }
-
-        .empty-state i {
-            font-size: 48px;
+        /* Alerts */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 4px;
             margin-bottom: 15px;
-            color: var(--light-gray);
         }
 
-        .empty-state p {
-            font-size: 16px;
+        .alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
         }
 
-        .loading {
+        .alert-danger {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* Utilities */
+        .hidden {
             display: none;
-            text-align: center;
-            padding: 20px;
         }
 
-        .loading i {
-            font-size: 24px;
-            color: var(--primary);
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-3 {
+            margin-top: 15px;
+        }
+
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+
+        .d-flex {
+            display: flex;
+        }
+
+        .align-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 10px;
+        }
+
+        /* Loader */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #2563eb;
+            width: 24px;
+            height: 24px;
             animation: spin 1s linear infinite;
+            margin: 20px auto;
         }
 
         @keyframes spin {
@@ -246,313 +310,1008 @@
             100% { transform: rotate(360deg); }
         }
 
-        .footer {
-            text-align: center;
-            padding: 20px;
-            color: var(--gray);
-            font-size: 14px;
-            border-top: 1px solid var(--light-gray);
-        }
-
-        /* Responsive styles */
+        /* Responsive Styles */
         @media (max-width: 768px) {
-            .container {
-                width: 98%;
-                margin: 15px auto;
-            }
-
-            .header {
-                padding: 20px;
+            .card-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 15px;
             }
 
-            .header h1 {
-                font-size: 24px;
+            .tabs {
+                padding-bottom: 5px;
             }
 
-            .dropdown {
-                align-self: flex-end;
-            }
-
-            .content {
-                padding: 20px 15px;
+            .tab {
+                padding: 10px;
             }
 
             th, td {
-                padding: 12px 10px;
-                font-size: 14px;
+                padding: 8px;
             }
 
-            #login-button {
-                padding: 10px 20px;
-                font-size: 15px;
+            .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .d-flex.action-buttons {
+                flex-direction: column;
+                width: 100%;
             }
         }
 
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 20px;
+        @media (max-width: 576px) {
+            .header-content {
+                flex-direction: column;
+                gap: 10px;
             }
 
-            .header p {
-                font-size: 14px;
+            .card-title {
+                font-size: 16px;
+            }
+
+            .form-control {
+                padding: 8px;
             }
 
             th, td {
-                padding: 10px 8px;
                 font-size: 13px;
             }
 
-            .table-container {
+            .table-responsive {
                 margin: 0 -15px;
                 width: calc(100% + 30px);
-                border-radius: 0;
+                padding: 0 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="header-left">
-                <h1>Bolt Appointments</h1>
-                <p>Admin Panel for the Appointments</p>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="logo text-center mb-3">
+                <i class="fas fa-bolt"></i>
+                <span>Bolt Admin</span>
             </div>
-
-            <div class="dropdown" id="navDropdown">
-                <button class="dropdown-btn" onclick="toggleDropdown()">
-                    <i class="fas fa-bars"></i> Navigation
-                </button>
-                <div class="dropdown-content">
-                    <a href="uplord.html"><i class="fas fa-link"></i> Uplords</a>
-                    <a href="testimonials.html"><i class="fas fa-star"></i> Testimonials</a>
-                    <a href="job.html"><i class="fas fa-briefcase"></i> Career</a>
-                    <a href="index.html"><i class="fas fa-calendar-check"></i> Appointments</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="content">
-            <div class="login-section">
-                <p>Please login to access the appointment details</p>
-                <button id="login-button"><i class="fab fa-google"></i> Login with Google</button>
-            </div>
-
-            <div class="table-container">
-                <table id="thesis-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Appointment Date</th>
-                            <th>Appointment Time</th>
-                            <th>Phone Number</th>
-                            <th>Message</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Data will be populated here -->
-                    </tbody>
-                </table>
-
-                <div id="empty-state" class="empty-state">
-                    <i class="far fa-calendar-alt"></i>
-                    <p>Login to view appointment details</p>
-                </div>
-
-                <div id="loading" class="loading">
-                    <i class="fas fa-spinner"></i>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer">
-            &copy; 2025 Bolt Appointments | All Rights Reserved
+            <h2 class="login-title">Sign in to your account</h2>
+            <div id="loginAlert" class="alert alert-danger hidden"></div>
+            <button id="googleSignIn" class="login-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18">
+                Sign in with Google
+            </button>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <!-- Dashboard -->
+    <div id="dashboardPage" class="hidden">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <i class="fas fa-bolt"></i>
+                        <span>Bolt Admin</span>
+                    </div>
+                    <button id="logoutBtn" class="btn btn-sm">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="container">
+                <div class="tabs">
+                    <div class="tab active" data-tab="uploads">Uploads</div>
+                    <div class="tab" data-tab="testimonials">Testimonials</div>
+                    <div class="tab" data-tab="jobPositions">Job Positions</div>
+                    <div class="tab" data-tab="appointments">Appointments</div>
+                </div>
+
+                <!-- Uploads Tab -->
+                <div class="tab-content active" id="uploadsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Add New Upload</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="uploadAlert" class="alert hidden"></div>
+                            <div class="form-group">
+                                <label for="uploadName" class="form-label">Name</label>
+                                <input type="text" id="uploadName" class="form-control" placeholder="Enter name">
+                            </div>
+                            <div class="form-group">
+                                <label for="uploadDescription" class="form-label">Description</label>
+                                <textarea id="uploadDescription" class="form-control" placeholder="Enter description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="uploadLink" class="form-label">Link</label>
+                                <input type="text" id="uploadLink" class="form-control" placeholder="Enter link">
+                            </div>
+                            <button id="uploadSubmitBtn" class="btn">
+                                <i class="fas fa-plus"></i> Add Upload
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Manage Uploads</h2>
+                            <button id="refreshUploadsBtn" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="uploadsLoader" class="loader hidden"></div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Link</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="uploadsList">
+                                        <tr>
+                                            <td colspan="4">No uploads found. Add some uploads to see them here.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonials Tab -->
+                <div class="tab-content" id="testimonialsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Add New Testimonial</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="testimonialAlert" class="alert hidden"></div>
+                            <div class="form-group">
+                                <label for="testimonialName" class="form-label">Name</label>
+                                <input type="text" id="testimonialName" class="form-control" placeholder="Enter name">
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonialMessage" class="form-label">Message</label>
+                                <textarea id="testimonialMessage" class="form-control" placeholder="Enter message"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonialImageUrl" class="form-label">Image URL</label>
+                                <input type="text" id="testimonialImageUrl" class="form-control" placeholder="Enter image URL">
+                            </div>
+                            <div class="form-group">
+                                <label for="testimonialDescription" class="form-label">Description</label>
+                                <textarea id="testimonialDescription" class="form-control" placeholder="Enter description"></textarea>
+                            </div>
+                            <button id="testimonialSubmitBtn" class="btn">
+                                <i class="fas fa-plus"></i> Add Testimonial
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Manage Testimonials</h2>
+                            <button id="refreshTestimonialsBtn" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="testimonialsLoader" class="loader hidden"></div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Message</th>
+                                            <th>Image</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="testimonialsList">
+                                        <tr>
+                                            <td colspan="4">No testimonials found. Add some testimonials to see them here.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Positions Tab -->
+                <div class="tab-content" id="jobPositionsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Add New Job Position</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="jobPositionAlert" class="alert hidden"></div>
+                            <div class="form-group">
+                                <label for="jobPositionTitle" class="form-label">Title</label>
+                                <input type="text" id="jobPositionTitle" class="form-control" placeholder="Enter title">
+                            </div>
+                            <div class="form-group">
+                                <label for="jobPositionDescription" class="form-label">Description</label>
+                                <textarea id="jobPositionDescription" class="form-control" placeholder="Enter description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="jobPositionLocation" class="form-label">Location</label>
+                                <input type="text" id="jobPositionLocation" class="form-control" placeholder="Enter location">
+                            </div>
+                            <div class="form-group">
+                                <label for="jobPositionRequirements" class="form-label">Requirements</label>
+                                <textarea id="jobPositionRequirements" class="form-control" placeholder="Enter requirements"></textarea>
+                            </div>
+                            <button id="jobPositionSubmitBtn" class="btn">
+                                <i class="fas fa-plus"></i> Add Job Position
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Manage Job Positions</h2>
+                            <button id="refreshJobPositionsBtn" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="jobPositionsLoader" class="loader hidden"></div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Description</th>
+                                            <th>Location</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="jobPositionsList">
+                                        <tr>
+                                            <td colspan="4">No job positions found. Add some job positions to see them here.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Appointments Tab -->
+                <div class="tab-content" id="appointmentsTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Add New Appointment</h2>
+                        </div>
+                        <div class="card-body">
+                            <div id="appointmentAlert" class="alert hidden"></div>
+                            <div class="form-group">
+                                <label for="appointmentName" class="form-label">Name</label>
+                                <input type="text" id="appointmentName" class="form-control" placeholder="Enter name">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentEmail" class="form-label">Email</label>
+                                <input type="email" id="appointmentEmail" class="form-control" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentPhone" class="form-label">Phone</label>
+                                <input type="text" id="appointmentPhone" class="form-control" placeholder="Enter phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentDate" class="form-label">Appointment Date</label>
+                                <input type="date" id="appointmentDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentTime" class="form-label">Appointment Time</label>
+                                <input type="time" id="appointmentTime" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentMessage" class="form-label">Message</label>
+                                <textarea id="appointmentMessage" class="form-control" placeholder="Enter message"></textarea>
+                            </div>
+                            <button id="appointmentSubmitBtn" class="btn">
+                                <i class="fas fa-plus"></i> Add Appointment
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Manage Appointments</h2>
+                            <button id="refreshAppointmentsBtn" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="appointmentsLoader" class="loader hidden"></div>
+                            <div class="table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Appointment Date</th>
+                                            <th>Appointment Time</th>
+                                            <th>Message</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointmentsList">
+                                        <tr>
+                                            <td colspan="7">No appointments found. Add some appointments to see them here.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script>
         // Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyAkDl3ckFSXDHlZpyR0s7IZ1UTSX8Z6hSY",
-            authDomain: "bolt-54408.firebaseapp.com",
-            projectId: "bolt-54408",
-            storageBucket: "bolt-54408.firebasestorage.app",
-            messagingSenderId: "88291790006",
-            appId: "1:88291790006:web:259387f2de1d7b164eaa17",
-            measurementId: "G-6YD4D3514J"
+            apiKey: "AIzaSyAKEIBthV_wcX0Omzqk97tITFqMx8hRGVA",
+            authDomain: "bolt-uplords.firebaseapp.com",
+            projectId: "bolt-uplords",
+            storageBucket: "bolt-uplords.appspot.com",
+            messagingSenderId: "199484285040",
+            appId: "1:199484285040:web:5a28f158b5541cadad54b5"
         };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        // DOM elements
-        const loginButton = document.getElementById('login-button');
-        const thesisTable = document.getElementById('thesis-table');
-        const tableBody = thesisTable.querySelector('tbody');
-        const emptyState = document.getElementById('empty-state');
-        const loading = document.getElementById('loading');
-        const navDropdown = document.getElementById('navDropdown');
+        // Global variables
+        let token = '';
+        let currentUser = null;
 
-        // Toggle dropdown function
-        function toggleDropdown() {
-            navDropdown.classList.toggle('active');
+        // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const dashboardPage = document.getElementById('dashboardPage');
+        const googleSignInBtn = document.getElementById('googleSignIn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const loginAlert = document.getElementById('loginAlert');
+        const uploadAlert = document.getElementById('uploadAlert');
+        const testimonialAlert = document.getElementById('testimonialAlert');
+        const jobPositionAlert = document.getElementById('jobPositionAlert');
+        const appointmentAlert = document.getElementById('appointmentAlert');
+        const uploadsLoader = document.getElementById('uploadsLoader');
+        const testimonialsLoader = document.getElementById('testimonialsLoader');
+        const jobPositionsLoader = document.getElementById('jobPositionsLoader');
+        const appointmentsLoader = document.getElementById('appointmentsLoader');
+
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if user is already logged in
+            auth.onAuthStateChanged(user => {
+                if (user) {
+                    handleUserSignIn(user);
+                } else {
+                    showLoginPage();
+                }
+            });
+
+            // Sign in with Google
+            googleSignInBtn.addEventListener('click', signInWithGoogle);
+
+            // Logout
+            logoutBtn.addEventListener('click', signOut);
+
+            // Tab navigation
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+
+            // Upload form submission
+            document.getElementById('uploadSubmitBtn').addEventListener('click', uploadFile);
+            document.getElementById('refreshUploadsBtn').addEventListener('click', fetchUploads);
+
+            // Testimonial form submission
+            document.getElementById('testimonialSubmitBtn').addEventListener('click', addTestimonial);
+            document.getElementById('refreshTestimonialsBtn').addEventListener('click', fetchTestimonials);
+
+            // Job Position form submission
+            document.getElementById('jobPositionSubmitBtn').addEventListener('click', addJobPosition);
+            document.getElementById('refreshJobPositionsBtn').addEventListener('click', fetchJobPositions);
+
+            // Appointment form submission
+            document.getElementById('appointmentSubmitBtn').addEventListener('click', addAppointment);
+            document.getElementById('refreshAppointmentsBtn').addEventListener('click', fetchAppointments);
+        });
+
+        // Authentication Functions
+        async function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                const result = await auth.signInWithPopup(provider);
+                handleUserSignIn(result.user);
+            } catch (error) {
+                showAlert(loginAlert, 'Error signing in: ' + error.message, 'danger');
+            }
         }
 
-        // Close dropdown when clicking outside
-        window.addEventListener('click', function(event) {
-            if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-btn')) {
-                navDropdown.classList.remove('active');
-            }
-        });
+        async function handleUserSignIn(user) {
+            currentUser = user;
+            token = await user.getIdToken();
 
-        // Hide table initially, show empty state
-        thesisTable.style.display = 'none';
-        emptyState.style.display = 'block';
+            // Show dashboard
+            showDashboardPage();
 
-        // Google login
-        loginButton.addEventListener('click', () => {
-            loading.style.display = 'block';
-            emptyState.style.display = 'none';
+            // Fetch initial data
+            fetchUploads();
+        }
 
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-                .then(result => {
-                    loginButton.innerHTML = '<i class="fas fa-check-circle"></i> Logged In';
-                    loginButton.disabled = true;
-                    loginButton.style.backgroundColor = '#4cc9f0';
-
-                    const idToken = result.user.getIdToken();
-                    idToken.then(token => {
-                        fetch('https://82r28r72gfhfb-rr2z.onrender.com/login', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ idToken: token })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Login successful:', data);
-                            fetchThesisDetails(token);
-                        })
-                        .catch(error => {
-                            console.error('Error logging in:', error);
-                            showError('Login failed. Please try again.');
-                        });
-                    });
-                })
-                .catch(error => {
-                    console.error('Error during Google login:', error);
-                    showError('Google login failed. Please try again.');
-                });
-        });
-
-        // Fetch thesis details with authentication
-        const fetchThesisDetails = (token) => {
-            loading.style.display = 'block';
-
-            fetch('https://82r28r72gfhfb-rr2z.onrender.com', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data');
-                }
-                return response.json();
-            })
-            .then(data => {
-                loading.style.display = 'none';
-
-                if (data && data.length > 0) {
-                    thesisTable.style.display = 'table';
-                    emptyState.style.display = 'none';
-
-                    // Clear existing rows
-                    tableBody.innerHTML = '';
-
-                    // Add data rows
-                    data.forEach((item, index) => {
-                        const row = document.createElement('tr');
-                        row.setAttribute('data-id', item.id); // Assuming each item has a unique ID
-                        row.innerHTML = `
-                            <td>${escapeHtml(item.name || '-')}</td>
-                            <td>${escapeHtml(item.email || '-')}</td>
-                            <td>${formatDate(item.appointmentDate)}</td>
-                            <td>${formatTime(item.appointmentTime)}</td>
-                            <td>${escapeHtml(item.phone || '-')}</td>
-                            <td>${escapeHtml(item.message || '-')}</td>
-                        `;
-                        tableBody.appendChild(row);
-                    });
-                } else {
-                    // No data
-                    thesisTable.style.display = 'none';
-                    emptyState.style.display = 'block';
-                    emptyState.innerHTML = `
-                        <i class="far fa-calendar-times"></i>
-                        <p>No appointment data available</p>
-                    `;
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching thesis details:', error);
-                loading.style.display = 'none';
-                showError('Failed to fetch appointment data');
+        function signOut() {
+            auth.signOut().then(() => {
+                showLoginPage();
+                token = '';
+                currentUser = null;
+            }).catch(error => {
+                console.error('Error signing out:', error);
             });
-        };
+        }
 
-        // Helper function to show errors
-        const showError = (message) => {
-            loading.style.display = 'none';
-            emptyState.style.display = 'block';
-            emptyState.innerHTML = `
-                <i class="fas fa-exclamation-circle" style="color: #dc3545;"></i>
-                <p>${message}</p>
-            `;
-        };
+        // UI Functions
+        function showLoginPage() {
+            loginPage.classList.remove('hidden');
+            dashboardPage.classList.add('hidden');
+        }
 
-        // Helper function to escape HTML to prevent XSS
-        const escapeHtml = (unsafe) => {
-            if (typeof unsafe !== 'string') return unsafe;
+        function showDashboardPage() {
+            loginPage.classList.add('hidden');
+            dashboardPage.classList.remove('hidden');
+        }
+
+        function switchTab(tab) {
+            // Update tabs
+            tabs.forEach(item => {
+                if (item.dataset.tab === tab) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+
+            // Update tab contents
+            tabContents.forEach(content => {
+                if (content.id === tab + 'Tab') {
+                    content.classList.add('active');
+                } else {
+                    content.classList.remove('active');
+                }
+            });
+
+            // Load data if needed
+            if (tab === 'testimonials') {
+                fetchTestimonials();
+            } else if (tab === 'jobPositions') {
+                fetchJobPositions();
+            } else if (tab === 'appointments') {
+                fetchAppointments();
+            }
+        }
+
+        function showAlert(element, message, type) {
+            element.textContent = message;
+            element.classList.remove('hidden', 'alert-success', 'alert-danger');
+            element.classList.add('alert-' + type);
+
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                element.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Uploads Functions
+        async function fetchUploads() {
+            try {
+                uploadsLoader.classList.remove('hidden');
+                document.getElementById('uploadsList').innerHTML = '';
+
+                const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/uploads-details', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch uploads');
+                }
+
+                const uploads = await response.json();
+                displayUploads(uploads);
+            } catch (error) {
+                console.error("Error fetching uploads:", error);
+                showAlert(uploadAlert, 'Error fetching uploads: ' + error.message, 'danger');
+            } finally {
+                uploadsLoader.classList.add('hidden');
+            }
+        }
+
+        function displayUploads(uploads) {
+            const uploadsList = document.getElementById('uploadsList');
+
+            if (uploads.length === 0) {
+                uploadsList.innerHTML = `
+                    <tr>
+                        <td colspan="4">No uploads found. Add some uploads to see them here.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            uploadsList.innerHTML = uploads.map(upload => `
+                <tr>
+                    <td>${escapeHtml(upload.name)}</td>
+                    <td>${escapeHtml(upload.description)}</td>
+                    <td>
+                        <a href="${escapeHtml(upload.link)}" target="_blank" class="btn btn-secondary btn-sm">View</a>
+                    </td>
+                    <td>
+                        <button onclick="deleteUpload('${upload.id}')" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function uploadFile() {
+            const name = document.getElementById('uploadName').value.trim();
+            const description = document.getElementById('uploadDescription').value.trim();
+            const link = document.getElementById('uploadLink').value.trim();
+
+            if (!name || !description || !link) {
+                showAlert(uploadAlert, 'Please fill in all fields', 'danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, description, link })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to upload file');
+                }
+
+                showAlert(uploadAlert, 'Upload added successfully', 'success');
+
+                // Clear form
+                document.getElementById('uploadName').value = '';
+                document.getElementById('uploadDescription').value = '';
+                document.getElementById('uploadLink').value = '';
+
+                // Refresh uploads list
+                fetchUploads();
+            } catch (error) {
+                console.error("Error uploading file:", error);
+                showAlert(uploadAlert, 'Error uploading file: ' + error.message, 'danger');
+            }
+        }
+
+        async function deleteUpload(id) {
+            if (!confirm('Are you sure you want to delete this upload?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://82r28r72gfhfb-rr2z.onrender.com/upload/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete upload');
+                }
+
+                showAlert(uploadAlert, 'Upload deleted successfully', 'success');
+                fetchUploads();
+            } catch (error) {
+                console.error("Error deleting upload:", error);
+                showAlert(uploadAlert, 'Error deleting upload: ' + error.message, 'danger');
+            }
+        }
+
+        // Testimonials Functions
+        async function fetchTestimonials() {
+            try {
+                testimonialsLoader.classList.remove('hidden');
+                document.getElementById('testimonialsList').innerHTML = '';
+
+                const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/testimonials', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch testimonials');
+                }
+
+                const testimonials = await response.json();
+                displayTestimonials(testimonials);
+            } catch (error) {
+                console.error("Error fetching testimonials:", error);
+                showAlert(testimonialAlert, 'Error fetching testimonials: ' + error.message, 'danger');
+            } finally {
+                testimonialsLoader.classList.add('hidden');
+            }
+        }
+
+        function displayTestimonials(testimonials) {
+            const testimonialsList = document.getElementById('testimonialsList');
+
+            if (testimonials.length === 0) {
+                testimonialsList.innerHTML = `
+                    <tr>
+                        <td colspan="4">No testimonials found. Add some testimonials to see them here.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            testimonialsList.innerHTML = testimonials.map(testimonial => `
+                <tr>
+                    <td>${escapeHtml(testimonial.name)}</td>
+                    <td>${escapeHtml(testimonial.message)}</td>
+                    <td>
+                        ${testimonial.imageUrl ?
+                            `<a href="${escapeHtml(testimonial.imageUrl)}" target="_blank" class="btn btn-secondary btn-sm">View</a>` :
+                            'No image'
+                        }
+                    </td>
+                    <td>
+                        <button onclick="deleteTestimonial('${testimonial.id}')" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function addTestimonial() {
+            const name = document.getElementById('testimonialName').value.trim();
+            const message = document.getElementById('testimonialMessage').value.trim();
+            const imageUrl = document.getElementById('testimonialImageUrl').value.trim();
+            const description = document.getElementById('testimonialDescription').value.trim();
+
+            if (!name || !message) {
+                showAlert(testimonialAlert, 'Name and message are required', 'danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/testimonial', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, message, imageUrl, description })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add testimonial');
+                }
+
+                showAlert(testimonialAlert, 'Testimonial added successfully', 'success');
+
+                // Clear form
+                document.getElementById('testimonialName').value = '';
+                document.getElementById('testimonialMessage').value = '';
+                document.getElementById('testimonialImageUrl').value = '';
+                document.getElementById('testimonialDescription').value = '';
+
+                // Refresh testimonials list
+                fetchTestimonials();
+            } catch (error) {
+                console.error("Error adding testimonial:", error);
+                showAlert(testimonialAlert, 'Error adding testimonial: ' + error.message, 'danger');
+            }
+        }
+
+        async function deleteTestimonial(id) {
+            if (!confirm('Are you sure you want to delete this testimonial?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://82r28r72gfhfb-rr2z.onrender.com/testimonial/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete testimonial');
+                }
+
+                showAlert(testimonialAlert, 'Testimonial deleted successfully', 'success');
+                fetchTestimonials();
+            } catch (error) {
+                console.error("Error deleting testimonial:", error);
+                showAlert(testimonialAlert, 'Error deleting testimonial: ' + error.message, 'danger');
+            }
+        }
+
+        // Job Positions Functions
+        async function fetchJobPositions() {
+            try {
+                jobPositionsLoader.classList.remove('hidden');
+                document.getElementById('jobPositionsList').innerHTML = '';
+
+                const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/job-positions', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch job positions');
+                }
+
+                const jobPositions = await response.json();
+                displayJobPositions(jobPositions);
+            } catch (error) {
+                console.error("Error fetching job positions:", error);
+                showAlert(jobPositionAlert, 'Error fetching job positions: ' + error.message, 'danger');
+            } finally {
+                jobPositionsLoader.classList.add('hidden');
+            }
+        }
+
+        function displayJobPositions(jobPositions) {
+            const jobPositionsList = document.getElementById('jobPositionsList');
+
+            if (jobPositions.length === 0) {
+                jobPositionsList.innerHTML = `
+                    <tr>
+                        <td colspan="4">No job positions found. Add some job positions to see them here.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            jobPositionsList.innerHTML = jobPositions.map(jobPosition => `
+                <tr>
+                    <td>${escapeHtml(jobPosition.title)}</td>
+                    <td>${escapeHtml(jobPosition.description)}</td>
+                    <td>${escapeHtml(jobPosition.location)}</td>
+                    <td>
+                        <button onclick="deleteJobPosition('${jobPosition.id}')" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function addJobPosition() {
+            const title = document.getElementById('jobPositionTitle').value.trim();
+            const description = document.getElementById('jobPositionDescription').value.trim();
+            const location = document.getElementById('jobPositionLocation').value.trim();
+            const requirements = document.getElementById('jobPositionRequirements').value.trim();
+
+            if (!title || !description || !location || !requirements) {
+                showAlert(jobPositionAlert, 'Please fill in all fields', 'danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/job-position', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ title, description, location, requirements })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add job position');
+                }
+
+                showAlert(jobPositionAlert, 'Job position added successfully', 'success');
+
+                // Clear form
+                document.getElementById('jobPositionTitle').value = '';
+                document.getElementById('jobPositionDescription').value = '';
+                document.getElementById('jobPositionLocation').value = '';
+                document.getElementById('jobPositionRequirements').value = '';
+
+                // Refresh job positions list
+                fetchJobPositions();
+            } catch (error) {
+                console.error("Error adding job position:", error);
+                showAlert(jobPositionAlert, 'Error adding job position: ' + error.message, 'danger');
+            }
+        }
+
+        async function deleteJobPosition(id) {
+            if (!confirm('Are you sure you want to delete this job position?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://82r28r72gfhfb-rr2z.onrender.com/job-position/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete job position');
+                }
+
+                showAlert(jobPositionAlert, 'Job position deleted successfully', 'success');
+                fetchJobPositions();
+            } catch (error) {
+                console.error("Error deleting job position:", error);
+                showAlert(jobPositionAlert, 'Error deleting job position: ' + error.message, 'danger');
+            }
+        }
+
+        // Appointments Functions
+        async function fetchAppointments() {
+            try {
+                appointmentsLoader.classList.remove('hidden');
+                document.getElementById('appointmentsList').innerHTML = '';
+
+                const response = await fetch('https://oy5r9nomvn.onrender.com/thesis-details', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch appointments');
+                }
+
+                const appointments = await response.json();
+                displayAppointments(appointments);
+            } catch (error) {
+                console.error("Error fetching appointments:", error);
+                showAlert(appointmentAlert, 'Error fetching appointments: ' + error.message, 'danger');
+            } finally {
+                appointmentsLoader.classList.add('hidden');
+            }
+        }
+
+        function displayAppointments(appointments) {
+            const appointmentsList = document.getElementById('appointmentsList');
+
+            if (appointments.length === 0) {
+                appointmentsList.innerHTML = `
+                    <tr>
+                        <td colspan="7">No appointments found. Add some appointments to see them here.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            appointmentsList.innerHTML = appointments.map(appointment => `
+                <tr>
+                    <td>${escapeHtml(appointment.name)}</td>
+                    <td>${escapeHtml(appointment.email)}</td>
+                    <td>${escapeHtml(appointment.phone)}</td>
+                    <td>${escapeHtml(appointment.appointmentDate)}</td>
+                    <td>${escapeHtml(appointment.appointmentTime)}</td>
+                    <td>${escapeHtml(appointment.message)}</td>
+                    <td>
+                        <button onclick="deleteAppointment('${appointment.id}')" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function addAppointment() {
+            const name = document.getElementById('appointmentName').value.trim();
+            const email = document.getElementById('appointmentEmail').value.trim();
+            const phone = document.getElementById('appointmentPhone').value.trim();
+            const appointmentDate = document.getElementById('appointmentDate').value.trim();
+            const appointmentTime = document.getElementById('appointmentTime').value.trim();
+            const message = document.getElementById('appointmentMessage').value.trim();
+
+            if (!name || !email || !phone || !appointmentDate || !appointmentTime || !message) {
+                showAlert(appointmentAlert, 'Please fill in all fields', 'danger');
+                return;
+            }
+
+            try {
+                const response = await fetch('https://oy5r9nomvn.onrender.com/thesis-details', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, email, phone, appointmentDate, appointmentTime, message })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add appointment');
+                }
+
+                showAlert(appointmentAlert, 'Appointment added successfully', 'success');
+
+                // Clear form
+                document.getElementById('appointmentName').value = '';
+                document.getElementById('appointmentEmail').value = '';
+                document.getElementById('appointmentPhone').value = '';
+                document.getElementById('appointmentDate').value = '';
+                document.getElementById('appointmentTime').value = '';
+                document.getElementById('appointmentMessage').value = '';
+
+                // Refresh appointments list
+                fetchAppointments();
+            } catch (error) {
+                console.error("Error adding appointment:", error);
+                showAlert(appointmentAlert, 'Error adding appointment: ' + error.message, 'danger');
+            }
+        }
+
+        async function deleteAppointment(id) {
+            if (!confirm('Are you sure you want to delete this appointment?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://oy5r9nomvn.onrender.com/thesis-details/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to delete appointment');
+                }
+
+                showAlert(appointmentAlert, 'Appointment deleted successfully', 'success');
+                fetchAppointments();
+            } catch (error) {
+                console.error("Error deleting appointment:", error);
+                showAlert(appointmentAlert, 'Error deleting appointment: ' + error.message, 'danger');
+            }
+        }
+
+        // Helper Functions
+        function escapeHtml(unsafe) {
             return unsafe
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#039;");
-        };
+        }
 
-        // Helper function to format date
-        const formatDate = (dateString) => {
-            const date = new Date(dateString);
-            return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(date);
-        };
-
-        // Helper function to format time
-        const formatTime = (timeString) => {
-            const time = new Date(`1970-01-01T${timeString}`);
-            return new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }).format(time);
-        };
-
-        // Check if user is already logged in
-        firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                loginButton.innerHTML = '<i class="fas fa-check-circle"></i> Logged In';
-                loginButton.disabled = true;
-                loginButton.style.backgroundColor = '#4cc9f0';
-
-                user.getIdToken().then(token => {
-                    fetchThesisDetails(token);
-                });
-            }
-        });
+        // Make functions available globally
+        window.deleteUpload = deleteUpload;
+        window.deleteTestimonial = deleteTestimonial;
+        window.deleteJobPosition = deleteJobPosition;
+        window.deleteAppointment = deleteAppointment;
     </script>
 </body>
 </html>
