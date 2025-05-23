@@ -87,7 +87,11 @@
             // Tab navigation
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
-                    switchTab(tab.dataset.tab);
+                    if (tab.dataset.tab === 'appointments') {
+                        checkAppointmentsAuth();
+                    } else {
+                        switchTab(tab.dataset.tab);
+                    }
                 });
             });
 
@@ -146,6 +150,16 @@
             }).catch(error => {
                 console.error('Error signing out:', error);
             });
+        }
+
+        // Check if user is authenticated for appointments
+        async function checkAppointmentsAuth() {
+            const user = appointmentsAuth.currentUser;
+            if (user) {
+                switchTab('appointments');
+            } else {
+                await signInWithGoogle(appointmentsAuth);
+            }
         }
 
         // UI Functions
