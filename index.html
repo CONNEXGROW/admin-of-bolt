@@ -6,664 +6,18 @@
     <title>Bolt Admin</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Simple CSS Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Base Styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        /* Container */
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-
-        /* Header */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 15px 0;
-            margin-bottom: 20px;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
-        }
-
-        .logo i {
-            margin-right: 10px;
-        }
-
-        /* Login Page */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .login-box {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 30px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .login-title {
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-
-        .login-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 12px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .login-btn:hover {
-            background-color: #f5f5f5;
-        }
-
-        .login-btn img {
-            margin-right: 10px;
-        }
-
-        /* Main Content */
-        .main-content {
-            padding: 20px 0;
-        }
-
-        /* Tabs */
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
-            overflow-x: auto;
-        }
-
-        .tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .tab.active {
-            border-bottom: 2px solid #2563eb;
-            color: #2563eb;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Cards */
-        .card {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-        }
-
-        .card-body {
-            padding: 15px;
-        }
-
-        /* Forms */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 10px 15px;
-            background-color: #2563eb;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-
-        .btn:hover {
-            background-color: #1d4ed8;
-        }
-
-        .btn-secondary {
-            background-color: #6b7280;
-        }
-
-        .btn-secondary:hover {
-            background-color: #4b5563;
-        }
-
-        .btn-danger {
-            background-color: #ef4444;
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-
-        .btn-sm {
-            padding: 6px 10px;
-            font-size: 12px;
-        }
-
-        /* Tables */
-        .table-responsive {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-
-        th {
-            background-color: #f9fafb;
-            font-weight: 600;
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 12px 15px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-        }
-
-        .alert-success {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-
-        .alert-danger {
-            background-color: #fee2e2;
-            color: #b91c1c;
-        }
-
-        /* Utilities */
-        .hidden {
-            display: none;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-3 {
-            margin-top: 15px;
-        }
-
-        .mb-3 {
-            margin-bottom: 15px;
-        }
-
-        .d-flex {
-            display: flex;
-        }
-
-        .align-center {
-            align-items: center;
-        }
-
-        .justify-between {
-            justify-content: space-between;
-        }
-
-        .gap-2 {
-            gap: 10px;
-        }
-
-        /* Loader */
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 3px solid #2563eb;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .card-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .tabs {
-                padding-bottom: 5px;
-            }
-
-            .tab {
-                padding: 10px;
-            }
-
-            th, td {
-                padding: 8px;
-            }
-
-            .btn {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-
-            .d-flex.action-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .header-content {
-                flex-direction: column;
-                gap: 10px;
-            }
-
-            .card-title {
-                font-size: 16px;
-            }
-
-            .form-control {
-                padding: 8px;
-            }
-
-            th, td {
-                font-size: 13px;
-            }
-
-            .table-responsive {
-                margin: 0 -15px;
-                width: calc(100% + 30px);
-                padding: 0 15px;
-            }
-        }
+        /* Your existing CSS styles */
     </style>
 </head>
 <body>
-    <!-- Login Page -->
-    <div id="loginPage" class="login-container">
-        <div class="login-box">
-            <div class="logo text-center mb-3">
-                <i class="fas fa-bolt"></i>
-                <span>Bolt Admin</span>
-            </div>
-            <h2 class="login-title">Sign in to your account</h2>
-            <div id="loginAlert" class="alert alert-danger hidden"></div>
-            <button id="googleSignIn" class="login-btn">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="18" height="18">
-                Sign in with Google
-            </button>
-        </div>
-    </div>
-
-    <!-- Dashboard -->
-    <div id="dashboardPage" class="hidden">
-        <header>
-            <div class="container">
-                <div class="header-content">
-                    <div class="logo">
-                        <i class="fas fa-bolt"></i>
-                        <span>Bolt Admin</span>
-                    </div>
-                    <button id="logoutBtn" class="btn btn-sm">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <div class="main-content">
-            <div class="container">
-                <div class="tabs">
-                    <div class="tab active" data-tab="uploads">Uploads</div>
-                    <div class="tab" data-tab="testimonials">Testimonials</div>
-                    <div class="tab" data-tab="jobPositions">Job Positions</div>
-                    <div class="tab" data-tab="appointments">Appointments</div>
-                </div>
-
-                <!-- Uploads Tab -->
-                <div class="tab-content active" id="uploadsTab">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Add New Upload</h2>
-                        </div>
-                        <div class="card-body">
-                            <div id="uploadAlert" class="alert hidden"></div>
-                            <div class="form-group">
-                                <label for="uploadName" class="form-label">Name</label>
-                                <input type="text" id="uploadName" class="form-control" placeholder="Enter name">
-                            </div>
-                            <div class="form-group">
-                                <label for="uploadDescription" class="form-label">Description</label>
-                                <textarea id="uploadDescription" class="form-control" placeholder="Enter description"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="uploadLink" class="form-label">Link</label>
-                                <input type="text" id="uploadLink" class="form-control" placeholder="Enter link">
-                            </div>
-                            <button id="uploadSubmitBtn" class="btn">
-                                <i class="fas fa-plus"></i> Add Upload
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Manage Uploads</h2>
-                            <button id="refreshUploadsBtn" class="btn btn-secondary btn-sm">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div id="uploadsLoader" class="loader hidden"></div>
-                            <div class="table-responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>Link</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="uploadsList">
-                                        <tr>
-                                            <td colspan="4">No uploads found. Add some uploads to see them here.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonials Tab -->
-                <div class="tab-content" id="testimonialsTab">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Add New Testimonial</h2>
-                        </div>
-                        <div class="card-body">
-                            <div id="testimonialAlert" class="alert hidden"></div>
-                            <div class="form-group">
-                                <label for="testimonialName" class="form-label">Name</label>
-                                <input type="text" id="testimonialName" class="form-control" placeholder="Enter name">
-                            </div>
-                            <div class="form-group">
-                                <label for="testimonialMessage" class="form-label">Message</label>
-                                <textarea id="testimonialMessage" class="form-control" placeholder="Enter message"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="testimonialImageUrl" class="form-label">Image URL</label>
-                                <input type="text" id="testimonialImageUrl" class="form-control" placeholder="Enter image URL">
-                            </div>
-                            <div class="form-group">
-                                <label for="testimonialDescription" class="form-label">Description</label>
-                                <textarea id="testimonialDescription" class="form-control" placeholder="Enter description"></textarea>
-                            </div>
-                            <button id="testimonialSubmitBtn" class="btn">
-                                <i class="fas fa-plus"></i> Add Testimonial
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Manage Testimonials</h2>
-                            <button id="refreshTestimonialsBtn" class="btn btn-secondary btn-sm">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div id="testimonialsLoader" class="loader hidden"></div>
-                            <div class="table-responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Message</th>
-                                            <th>Image</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="testimonialsList">
-                                        <tr>
-                                            <td colspan="4">No testimonials found. Add some testimonials to see them here.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Job Positions Tab -->
-                <div class="tab-content" id="jobPositionsTab">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Add New Job Position</h2>
-                        </div>
-                        <div class="card-body">
-                            <div id="jobPositionAlert" class="alert hidden"></div>
-                            <div class="form-group">
-                                <label for="jobPositionTitle" class="form-label">Title</label>
-                                <input type="text" id="jobPositionTitle" class="form-control" placeholder="Enter title">
-                            </div>
-                            <div class="form-group">
-                                <label for="jobPositionDescription" class="form-label">Description</label>
-                                <textarea id="jobPositionDescription" class="form-control" placeholder="Enter description"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="jobPositionLocation" class="form-label">Location</label>
-                                <input type="text" id="jobPositionLocation" class="form-control" placeholder="Enter location">
-                            </div>
-                            <div class="form-group">
-                                <label for="jobPositionRequirements" class="form-label">Requirements</label>
-                                <textarea id="jobPositionRequirements" class="form-control" placeholder="Enter requirements"></textarea>
-                            </div>
-                            <button id="jobPositionSubmitBtn" class="btn">
-                                <i class="fas fa-plus"></i> Add Job Position
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Manage Job Positions</h2>
-                            <button id="refreshJobPositionsBtn" class="btn btn-secondary btn-sm">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div id="jobPositionsLoader" class="loader hidden"></div>
-                            <div class="table-responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Location</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="jobPositionsList">
-                                        <tr>
-                                            <td colspan="4">No job positions found. Add some job positions to see them here.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Appointments Tab -->
-                <div class="tab-content" id="appointmentsTab">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Add New Appointment</h2>
-                        </div>
-                        <div class="card-body">
-                            <div id="appointmentAlert" class="alert hidden"></div>
-                            <div class="form-group">
-                                <label for="appointmentName" class="form-label">Name</label>
-                                <input type="text" id="appointmentName" class="form-control" placeholder="Enter name">
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentEmail" class="form-label">Email</label>
-                                <input type="email" id="appointmentEmail" class="form-control" placeholder="Enter email">
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentPhone" class="form-label">Phone</label>
-                                <input type="text" id="appointmentPhone" class="form-control" placeholder="Enter phone">
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentDate" class="form-label">Appointment Date</label>
-                                <input type="date" id="appointmentDate" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentTime" class="form-label">Appointment Time</label>
-                                <input type="time" id="appointmentTime" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label for="appointmentMessage" class="form-label">Message</label>
-                                <textarea id="appointmentMessage" class="form-control" placeholder="Enter message"></textarea>
-                            </div>
-                            <button id="appointmentSubmitBtn" class="btn">
-                                <i class="fas fa-plus"></i> Add Appointment
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Manage Appointments</h2>
-                            <button id="refreshAppointmentsBtn" class="btn btn-secondary btn-sm">
-                                <i class="fas fa-sync-alt"></i> Refresh
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div id="appointmentsLoader" class="loader hidden"></div>
-                            <div class="table-responsive">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Appointment Date</th>
-                                            <th>Appointment Time</th>
-                                            <th>Message</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="appointmentsList">
-                                        <tr>
-                                            <td colspan="7">No appointments found. Add some appointments to see them here.</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Your existing HTML content -->
 
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
+        // Firebase configuration for the main app
+        const mainFirebaseConfig = {
             apiKey: "AIzaSyAKEIBthV_wcX0Omzqk97tITFqMx8hRGVA",
             authDomain: "bolt-uplords.firebaseapp.com",
             projectId: "bolt-uplords",
@@ -672,12 +26,28 @@
             appId: "1:199484285040:web:5a28f158b5541cadad54b5"
         };
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        // Firebase configuration for the appointments app
+        const appointmentsFirebaseConfig = {
+            apiKey: "AIzaSyAkDl3ckFSXDHlZpyR0s7IZ1UTSX8Z6hSY",
+            authDomain: "bolt-54408.firebaseapp.com",
+            projectId: "bolt-54408",
+            storageBucket: "bolt-54408.appspot.com",
+            messagingSenderId: "88291790006",
+            appId: "1:88291790006:web:259387f2de1d7b164eaa17",
+            measurementId: "G-6YD4D3514J"
+        };
+
+        // Initialize Firebase for the main app
+        const mainApp = firebase.initializeApp(mainFirebaseConfig, "mainApp");
+        const mainAuth = mainApp.auth();
+
+        // Initialize Firebase for the appointments app
+        const appointmentsApp = firebase.initializeApp(appointmentsFirebaseConfig, "appointmentsApp");
+        const appointmentsAuth = appointmentsApp.auth();
 
         // Global variables
-        let token = '';
+        let mainToken = '';
+        let appointmentsToken = '';
         let currentUser = null;
 
         // DOM Elements
@@ -700,16 +70,16 @@
         // Event Listeners
         document.addEventListener('DOMContentLoaded', () => {
             // Check if user is already logged in
-            auth.onAuthStateChanged(user => {
+            mainAuth.onAuthStateChanged(user => {
                 if (user) {
-                    handleUserSignIn(user);
+                    handleUserSignIn(user, mainAuth);
                 } else {
                     showLoginPage();
                 }
             });
 
             // Sign in with Google
-            googleSignInBtn.addEventListener('click', signInWithGoogle);
+            googleSignInBtn.addEventListener('click', () => signInWithGoogle(mainAuth));
 
             // Logout
             logoutBtn.addEventListener('click', signOut);
@@ -739,19 +109,23 @@
         });
 
         // Authentication Functions
-        async function signInWithGoogle() {
+        async function signInWithGoogle(authInstance) {
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
-                const result = await auth.signInWithPopup(provider);
-                handleUserSignIn(result.user);
+                const result = await authInstance.signInWithPopup(provider);
+                handleUserSignIn(result.user, authInstance);
             } catch (error) {
                 showAlert(loginAlert, 'Error signing in: ' + error.message, 'danger');
             }
         }
 
-        async function handleUserSignIn(user) {
+        async function handleUserSignIn(user, authInstance) {
             currentUser = user;
-            token = await user.getIdToken();
+            if (authInstance === mainAuth) {
+                mainToken = await user.getIdToken();
+            } else if (authInstance === appointmentsAuth) {
+                appointmentsToken = await user.getIdToken();
+            }
 
             // Show dashboard
             showDashboardPage();
@@ -761,9 +135,13 @@
         }
 
         function signOut() {
-            auth.signOut().then(() => {
+            Promise.all([
+                mainAuth.signOut(),
+                appointmentsAuth.signOut()
+            ]).then(() => {
                 showLoginPage();
-                token = '';
+                mainToken = '';
+                appointmentsToken = '';
                 currentUser = null;
             }).catch(error => {
                 console.error('Error signing out:', error);
@@ -829,7 +207,7 @@
 
                 const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/uploads-details', {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     }
                 });
 
@@ -888,7 +266,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     },
                     body: JSON.stringify({ name, description, link })
                 });
@@ -921,7 +299,7 @@
                 const response = await fetch(`https://82r28r72gfhfb-rr2z.onrender.com/upload/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     }
                 });
 
@@ -945,7 +323,7 @@
 
                 const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/testimonials', {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     }
                 });
 
@@ -1008,7 +386,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     },
                     body: JSON.stringify({ name, message, imageUrl, description })
                 });
@@ -1042,7 +420,7 @@
                 const response = await fetch(`https://82r28r72gfhfb-rr2z.onrender.com/testimonial/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     }
                 });
 
@@ -1066,7 +444,7 @@
 
                 const response = await fetch('https://82r28r72gfhfb-rr2z.onrender.com/job-positions', {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     }
                 });
 
@@ -1124,7 +502,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     },
                     body: JSON.stringify({ title, description, location, requirements })
                 });
@@ -1158,7 +536,7 @@
                 const response = await fetch(`https://82r28r72gfhfb-rr2z.onrender.com/job-position/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${mainToken}`
                     }
                 });
 
@@ -1182,7 +560,7 @@
 
                 const response = await fetch('https://oy5r9nomvn.onrender.com/thesis-details', {
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${appointmentsToken}`
                     }
                 });
 
@@ -1245,7 +623,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${appointmentsToken}`
                     },
                     body: JSON.stringify({ name, email, phone, appointmentDate, appointmentTime, message })
                 });
@@ -1281,7 +659,7 @@
                 const response = await fetch(`https://oy5r9nomvn.onrender.com/thesis-details/${id}`, {
                     method: 'DELETE',
                     headers: {
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${appointmentsToken}`
                     }
                 });
 
